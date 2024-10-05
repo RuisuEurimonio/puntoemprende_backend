@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Exceptions;
+package validations;
 
 /**
  *
  * @author Ruisu's
  */
-public class CustomException extends RuntimeException{
-
-    public CustomException(String message){
-        super(message);
-    }
+public interface onUpdate {
     
 }

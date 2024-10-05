@@ -7,12 +7,16 @@ package com.puntoemprende.backend.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import validations.onCreate;
+import validations.onUpdate;
 
 /**
  *
@@ -24,24 +28,26 @@ import lombok.Data;
 public class TypeDocument {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="idTipoDocumento")
     private Integer id;
     
     @Column(name = "nombre", nullable = false)
-    @Size(min = 5, max= 60, message="Ingresa un nombre válido.")
-    @NotNull(message="Ingrese un texto")
-    @NotBlank(message="Ingrese un texto")
+    @NotNull(message="Ingrese un texto", groups = onCreate.class)
+    @NotBlank(message="Ingrese un texto", groups = onCreate.class)
+    @Size(min = 5, max= 60, message="Ingresa un nombre válido.", groups = {onCreate.class, onUpdate.class})
     private String name;
     
     @Column(name = "prefijo", nullable = false)
-    @Size(min = 1, max= 5, message="Ingresa un prefijo válido.")
-    @NotNull(message="Ingrese un texto")
-    @NotBlank(message="Ingrese un texto")
+    @NotNull(message="Ingrese un texto", groups = onCreate.class)
+    @NotBlank(message="Ingrese un texto", groups = onCreate.class)
+    @Size(min = 1, max= 5, message="Ingresa un prefijo válido.", groups = {onCreate.class, onUpdate.class})
     private String prefix;
     
     @Column(name = "descripcion", nullable= false)
-    @Size(min = 5, max= 125, message="Ingresa un nombre válido.")
-    @NotNull(message="Ingrese un texto")
-    @NotBlank(message="Ingrese un texto")
+    @NotNull(message="Ingrese un texto", groups = onCreate.class)
+    @NotBlank(message="Ingrese un texto", groups = onCreate.class)
+    @Size(min = 5, max= 125, message="Ingresa un nombre válido.", groups = {onCreate.class, onUpdate.class})
     private String description;
     
 }

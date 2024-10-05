@@ -19,51 +19,57 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TypeDocumentS {
-    
+
     @Autowired
     private TypeDocumentR typeDocumentR;
-    
-    public List<TypeDocument> getTypes(){
+
+    public List<TypeDocument> getTypes() {
         return typeDocumentR.getTypes();
     }
-    
-    public Optional<TypeDocument> getType(Integer id){
-        if(id != null){
-            return typeDocumentR.getType(id);
+
+    public Optional<TypeDocument> getType(Integer id) {
+        if (id == null) {
+            throw new CustomException("El id es nulo");
         }
-        throw new CustomException("El id es nulo");
-    }
-    
-    public TypeDocument createType(TypeDocument type){
-        if(type != null && type.getName() != null && type.getPrefix() != null && type.getDescription() != null){
-            return typeDocumentR.createType(type);
+        Optional<TypeDocument> type = typeDocumentR.getType(id);
+        if (type.isEmpty()) {
+            throw new CustomException("El id no se encontro");
         }
-        throw new CustomException("Información incompleta");
+        return type;
     }
-    
-    public TypeDocument updateType(TypeDocument type){
+
+    public TypeDocument createType(TypeDocument type) {
+        return typeDocumentR.createType(type);
+
+    }
+
+    public TypeDocument updateType(TypeDocument type) {
         Optional<TypeDocument> typeDB = typeDocumentR.getType(type.getId());
-        if(typeDB.isPresent()){
-            if(type.getName() != null){
-                typeDB.get().setName(type.getName());
-            }
-            if(type.getPrefix() != null){
-                typeDB.get().setPrefix(type.getPrefix());
-            }
-            if(type.getDescription() != null){
-                typeDB.get().setDescription(type.getDescription());
-            }
+        if (typeDB.isEmpty()) {
+            throw new CustomException("No se encontro el tipo a actualizar");
         }
-        throw new CustomException("No se encontro el tipo a actualizar");
+        if (type.getName() != null) {
+            typeDB.get().setName(type.getName());
+        }
+        if (type.getPrefix() != null) {
+            typeDB.get().setPrefix(type.getPrefix());
+        }
+        if (type.getDescription() != null) {
+            typeDB.get().setDescription(type.getDescription());
+        }
+        return typeDocumentR.updateType(typeDB.get());
+
     }
-    
-    public void deleteType(Integer id){
-        if(id != null){
+
+    public void deleteType(Integer id) {
+        if (id != null) {
             Optional<TypeDocument> typeDB = typeDocumentR.getType(id);
-            if(typeDB.isEmpty()){
+            if (typeDB.isEmpty()) {
                 throw new CustomException("No se encontro el tipo a eliminar");
             }
             typeDocumentR.deleteType(id);
+            return;
         }
+        throw new CustomException("No se ingreso un id");
     }
 }
