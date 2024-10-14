@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.puntoemprende.backend.Country;
+package com.puntoemprende.backend.GeneralTests;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

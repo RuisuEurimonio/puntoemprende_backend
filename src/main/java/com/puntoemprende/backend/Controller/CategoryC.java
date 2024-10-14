@@ -5,8 +5,8 @@
  */
 package com.puntoemprende.backend.Controller;
 
-import com.puntoemprende.backend.Model.Motive;
-import com.puntoemprende.backend.Service.MotiveS;
+import com.puntoemprende.backend.Model.Category;
+import com.puntoemprende.backend.Service.CategoryS;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,36 +29,36 @@ import validations.onUpdate;
  * @author Ruisu's
  */
 @RestController
-@RequestMapping("/api/motive")
+@RequestMapping("/api/category")
 @CrossOrigin
-public class MotiveC {
+public class CategoryC {
     
     @Autowired
-    private MotiveS motiveS;
+    private CategoryS categoryS;
     
     @GetMapping("/all")
-    public ResponseEntity<List<Motive>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(motiveS.getAll());
+    public ResponseEntity<List<Category>> getAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryS.getAll());
     }
     
     @GetMapping("/id/{id}")
-    public ResponseEntity<Motive> getById(@PathVariable("id") int id){
-        return ResponseEntity.status(HttpStatus.OK).body(motiveS.getById(id));
+    public ResponseEntity<Category> getById(@PathVariable("id") int id){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryS.getById(id));
     }
     
     @PostMapping("/create")
-    public ResponseEntity<Motive> createMotive(@Validated(onCreate.class) @RequestBody Motive motive){
-        return ResponseEntity.status(HttpStatus.CREATED).body(motiveS.createMotive(motive));
+    public ResponseEntity<Category> createMotive(@Validated(onCreate.class) @RequestBody Category motive){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryS.createMotive(motive));
     }
     
     @PutMapping("/update")
-    public ResponseEntity<Motive> updateMotive(@Validated(onUpdate.class) @RequestBody Motive motive){
-        return ResponseEntity.status(HttpStatus.CREATED).body(motiveS.updateMotive(motive));
+    public ResponseEntity<Category> updateMotive(@Validated(onUpdate.class) @RequestBody Category motive){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryS.updateMotive(motive));
     }
     
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMotive(@PathVariable("id") Integer id){
-        motiveS.deleteMotive(id);
+        categoryS.deleteMotive(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Motivo eliminado con id; "+id);
     }
     
