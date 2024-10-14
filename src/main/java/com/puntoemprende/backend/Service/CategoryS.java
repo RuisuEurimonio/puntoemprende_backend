@@ -32,18 +32,18 @@ public class CategoryS {
         return category;
     }
     
-    public Category createMotive(Category category){
+    public Category createCategory(Category category){
         return categoryR.createCategory(category);
     }
     
-    public Category updateMotive(Category motive){
-        Category categoryDB = categoryR.getById(motive.getId()).orElseThrow(()-> new CustomException("No se encontro la categoria"));
-        if(motive.getName() != null) {categoryDB.setName(motive.getName());}
-        if(motive.getDescription() != null) {categoryDB.setDescription(motive.getDescription());}
+    public Category updateCategory(Category category){
+        Category categoryDB = categoryR.getById(category.getId()).orElseThrow(()-> new CustomException("No se encontro la categoria"));
+        if(category.getName() != null) {categoryDB.setName(category.getName());}
+        if(category.getDescription() != null) {categoryDB.setDescription(category.getDescription());}
         return categoryR.updateCategory(categoryDB);
     }
     
-    public void deleteMotive(Integer id){
+    public void deleteCategory(Integer id){
         categoryR.getById(id).orElseThrow(()-> new CustomException("No se encontro la categoria"));
         categoryR.deleteCategory(id);
     }

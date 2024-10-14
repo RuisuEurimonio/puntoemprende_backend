@@ -28,110 +28,110 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Ruisu's
  */
 @SpringBootTest
-@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
 @Transactional
-public class CountryTest {
+@ActiveProfiles("test")
+@AutoConfigureMockMvc
+public class ScopeTest {
     
     @Autowired
     private MockMvc mockMvc;
     
     @Test
-    public void getEmptyList_returnIsOk() throws Exception{
-        mockMvc.perform(get("/api/country/all"))
+    public void getList_returnIsOk() throws Exception{
+        mockMvc.perform(get("/api/scope/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Colombia"))
+                .andExpect(jsonPath("$[0].description").value("Hace referencia a un rango de personas que se encuentran relativamente cerca."))
                 .andExpect(jsonPath("$.length()").value(1));
     }
     
     @Test
     public void create_returnIsCreated() throws Exception{
-        String newType = "{\"name\": \"Mexico\", \"prefix\": \"MX\"}";
+        String newType = "{\"name\": \"Nacional\", \"description\": \"Hace referencia a un alcance de publico de manera nacional, en el mismo pais\"}";
         
-        mockMvc.perform(post("/api/country/create")
+        mockMvc.perform(post("/api/scope/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newType))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Mexico"))
+                .andExpect(jsonPath("$.name").value("Nacional"))
                 .andExpect(jsonPath("$.id").value(2));
                 
     }
     
     @Test
-    public void getWithoutId_returnIsBadRequest() throws Exception{
-        mockMvc.perform(get("/api/country/id/"))
+    public void getTypeWithoutId_returnIsBadRequest() throws Exception{
+        mockMvc.perform(get("/api/scope/id/"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Ha sucedido un error"));
     }
     
     @Test
-    public void getThatNotExist_returnIsBadRequest() throws Exception{
-        mockMvc.perform(get("/api/country/id/5"))
+    public void getTypeThatNotExist_returnIsBadRequest() throws Exception{
+        mockMvc.perform(get("/api/scope/id/5"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("No se encontró el país."));
+                .andExpect(content().string("No se encontró el rango"));
     }
     
     @Test
-    public void createWithoutData_returnBadRequest() throws Exception{
+    public void createTypeWithoutData_returnBadRequest() throws Exception{
         String newType = "{}";
         
-        mockMvc.perform(post("/api/country/create")
+        mockMvc.perform(post("/api/scope/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newType))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.prefix").value("No se ingreso un prefijo"))
-                .andExpect(jsonPath("$.name").value("No se ingreso un nombre"));
+                .andExpect(jsonPath("$.name").value("Ingrese un nombre"))
+                .andExpect(jsonPath("$.description").value("Ingrese una descripcion"));
                 
     }
     
     @Test
     public void createWithoutName_returnBadRequest() throws Exception{
-        String newType = "{\"prefix\": \"MX\"}";
+        String newType = "{\"description\": \"Hace referencia a un alcance de publico de manera nacional, en el mismo pais.\"}";
         
-        mockMvc.perform(post("/api/country/create")
+        mockMvc.perform(post("/api/scope/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newType))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("No se ingreso un nombre"));
-                
+                .andExpect(jsonPath("$.name").value("Ingrese un nombre"));
     }
     
     @Test
     public void updateWithAllData_returnOk() throws Exception{
-        String newCountry = "{\"id\": 1, \"name\": \"Colombia\", \"prefix\": \"COL\"}";
-        String expectedCountry = "{\"id\": 1, \"name\": \"Colombia\", \"prefix\": \"COL\"}";
+        String newType = "{\"id\": 1, \"name\": \"Nacional\", \"description\": \"Hace referencia a un alcance de publico de manera nacional, en el mismo pais.\"}";
+        String expectedType = "{\"id\": 1, \"name\": \"Nacional\", \"description\": \"Hace referencia a un alcance de publico de manera nacional, en el mismo pais.\"}";
         
-        mockMvc.perform(put("/api/country/update")
+        mockMvc.perform(put("/api/scope/update")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(newCountry))
+                .content(newType))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(expectedCountry));
+                .andExpect(content().json(expectedType));
+                
     }
     
     @Test
     public void updateWithAllDataButWrongId_returnBadRequest() throws Exception{
-        String newType = "{\"id\": 24, \"name\": \"Colombia\", \"prefix\": \"COL\"}";
+        String newType = "{\"id\": 100, \"name\": \"Nacional\", \"description\": \"Hace referencia a un alcance de publico de manera nacional, en el mismo pais.\"}";
         
-        mockMvc.perform(put("/api/country/update")
+        mockMvc.perform(put("/api/scope/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newType))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("No se encontró el país a actualizar"));
+                .andExpect(content().string("No se encontró el rango"));
                 
     }
     
     @Test
     public void delete_isBadRequest() throws Exception{
-        mockMvc.perform(delete("/api/country/delete/23"))
+        mockMvc.perform(delete("/api/scope/delete/23"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("No se encontró el país a eliminar"));
+                .andExpect(content().string("No se encontró el rango"));
                 
     }
     
     @Test
     public void deleteWithoutUrlId_isBadRequest() throws Exception{
-        mockMvc.perform(delete("/api/country/update/"))
+        mockMvc.perform(delete("/api/scope/update/"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Ha sucedido un error"));
                 
@@ -139,9 +139,10 @@ public class CountryTest {
     
     @Test
     public void delete_isNoContent() throws Exception{
-        mockMvc.perform(delete("/api/country/delete/1"))
+        mockMvc.perform(delete("/api/scope/delete/1"))
                 .andExpect(status().isNoContent());
                 
     }
     
 }
+

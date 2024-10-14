@@ -60,21 +60,21 @@ public class MotiveTest {
     }
     
     @Test
-    public void getTypeWithoutId_returnIsBadRequest() throws Exception{
+    public void getWithoutId_returnIsBadRequest() throws Exception{
         mockMvc.perform(get("/api/motive/id/"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Ha sucedido un error"));
     }
     
     @Test
-    public void getTypeThatNotExist_returnIsBadRequest() throws Exception{
+    public void getThatNotExist_returnIsBadRequest() throws Exception{
         mockMvc.perform(get("/api/motive/id/5"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("No se encontró el motivo"));
     }
     
     @Test
-    public void createTypeWithoutData_returnBadRequest() throws Exception{
+    public void createWithoutData_returnBadRequest() throws Exception{
         String newType = "{}";
         
         mockMvc.perform(post("/api/motive/create")
@@ -111,7 +111,7 @@ public class MotiveTest {
     }
     
     @Test
-    public void updateTypeWithAllDataButWrongId_returnBadRequest() throws Exception{
+    public void updateWithAllDataButWrongId_returnBadRequest() throws Exception{
         String newType = "{\"id\": 100, \"name\": \"Desinformación\", \"description\": \"Tiene contenido que no es veridico ni fiable.\"}";
         
         mockMvc.perform(put("/api/motive/update")

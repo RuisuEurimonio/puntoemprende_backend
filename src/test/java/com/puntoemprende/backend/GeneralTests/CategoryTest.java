@@ -34,8 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CategoryTest {
     
-        
-    
     @Autowired
     private MockMvc mockMvc;
     
@@ -61,21 +59,21 @@ public class CategoryTest {
     }
     
     @Test
-    public void getTypeWithoutId_returnIsBadRequest() throws Exception{
+    public void getWithoutId_returnIsBadRequest() throws Exception{
         mockMvc.perform(get("/api/category/id/"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Ha sucedido un error"));
     }
     
     @Test
-    public void getTypeThatNotExist_returnIsBadRequest() throws Exception{
+    public void getThatNotExist_returnIsBadRequest() throws Exception{
         mockMvc.perform(get("/api/category/id/5"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("No se encontró la categoria"));
     }
     
     @Test
-    public void createTypeWithoutData_returnBadRequest() throws Exception{
+    public void createWithoutData_returnBadRequest() throws Exception{
         String newType = "{}";
         
         mockMvc.perform(post("/api/category/create")
@@ -112,7 +110,7 @@ public class CategoryTest {
     }
     
     @Test
-    public void updateTypeWithAllDataButWrongId_returnBadRequest() throws Exception{
+    public void updateWithAllDataButWrongId_returnBadRequest() throws Exception{
         String newType = "{\"id\": 100, \"name\": \"Computo\", \"description\": \"Articulos relacionados a los computadores.\"}";
         
         mockMvc.perform(put("/api/category/update")
