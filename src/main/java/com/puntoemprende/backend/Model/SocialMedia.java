@@ -27,11 +27,11 @@ public class SocialMedia extends CommonFields{
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    @Column(name = "idMunicipio", nullable = false)
+    @Column(name = "idRedSocial", nullable = false)
     private Integer id;
     
-    @Column(name = "nombre", nullable = false)
-    @Size(min = 1, max = 45, message = "Ingrese un nombre válido", groups = {onUpdate.class, onCreate.class})
-    private String name;
+    @Column(name = "link", nullable = false)
+    @Size(min = 10, max = 200, message = "Ingrese un nombre link valido", groups = {onUpdate.class, onCreate.class})
+    private String link;
     
 }
