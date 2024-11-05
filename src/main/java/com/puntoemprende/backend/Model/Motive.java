@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
@@ -22,6 +23,7 @@ import lombok.Data;
 @Table(name = "motivo")
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Motive extends CommonFields{
     
     @Id

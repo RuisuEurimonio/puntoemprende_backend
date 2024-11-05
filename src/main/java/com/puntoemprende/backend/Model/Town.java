@@ -5,11 +5,14 @@
  */
 package com.puntoemprende.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -21,9 +24,9 @@ import validations.onUpdate;
  * @author Ruisu's
  */
 @Entity
-@Table(name = "redsocial")
+@Table(name = "municipio")
 @Data
-public class SocialMedia extends CommonFields{
+public class Town {
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -33,5 +36,10 @@ public class SocialMedia extends CommonFields{
     @Column(name = "nombre", nullable = false)
     @Size(min = 1, max = 45, message = "Ingrese un nombre válido", groups = {onUpdate.class, onCreate.class})
     private String name;
+    
+    @JoinColumn(name = "pais_idPais", nullable = false)
+    @ManyToOne()
+    @JsonIgnoreProperties(value="towns")
+    private Country country;
     
 }

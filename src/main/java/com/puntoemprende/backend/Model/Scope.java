@@ -12,18 +12,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author Ruisu's
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "alcance")
 @Entity
 public class Scope extends CommonFields{
     
     @Id
-    @Column(name = "idCategoria", nullable = false)
+    @Column(name = "idAlcance", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     

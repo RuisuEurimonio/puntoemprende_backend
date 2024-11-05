@@ -11,3 +11,6 @@ INSERT INTO alcance (nombre, descripcion) VALUES ('Local', 'Hace referencia a un
 
 INSERT INTO reportado (is_Habilitado, mensaje_Rehabilitacion, fecha_Creacion, fecha_Actualizacion) VALUES (false, 'Se comprobo que el contenido si cumple con las normas.', '2024-10-14 10:30:45', '2024-10-14 10:30:45');
 
+INSERT INTO municipio (nombre, pais_id_pais) VALUES ('Buenos Aires', 1);
+
+

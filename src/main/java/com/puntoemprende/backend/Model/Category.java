@@ -21,7 +21,7 @@ import lombok.Data;
 @Table(name = "categoria")
 @Data
 public class Category extends CommonFields{
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCategoria", nullable = false)
