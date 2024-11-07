@@ -13,8 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Data;
 import validations.onCreate;
 import validations.onUpdate;
@@ -42,4 +44,7 @@ public class Town {
     @JsonIgnoreProperties(value="towns")
     private Country country;
     
+    @OneToMany(mappedBy = "town")
+    @JsonIgnoreProperties("town")
+    private List<User> users;
 }

@@ -5,15 +5,18 @@
  */
 package com.puntoemprende.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Data;
 import validations.onCreate;
 import validations.onUpdate;
@@ -50,4 +53,7 @@ public class TypeDocument {
     @Size(min = 5, max= 125, message="Ingresa un nombre válido.", groups = {onCreate.class, onUpdate.class})
     private String description;
     
+    @OneToMany(mappedBy = "typeDocument")
+    @JsonIgnoreProperties("typeDocument")
+    private List<User> users;
 }
