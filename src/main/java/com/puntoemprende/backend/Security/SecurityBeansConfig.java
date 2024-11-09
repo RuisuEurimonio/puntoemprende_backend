@@ -41,13 +41,16 @@ public class SecurityBeansConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return userName -> userS.findByEmail(userName)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new CustomException("User not found"));
     }
     
-    //@Bean
-    //public AuthenticationProvider authenticationProvider(){
-      //  DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        //daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//    }
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        
+        return daoAuthenticationProvider;
+    }
     
 }

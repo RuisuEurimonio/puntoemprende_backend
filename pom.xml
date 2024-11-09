@@ -86,7 +86,18 @@
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.0.Final</version> <!-- O la versión correspondiente -->
         </dependency>
-
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
