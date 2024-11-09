@@ -5,16 +5,13 @@
  */
 package com.puntoemprende.backend.JpaRepository;
 
-import com.puntoemprende.backend.Model.User;
-import java.util.Optional;
+import com.puntoemprende.backend.Model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Ruisu's
  */
-public interface UserJR extends JpaRepository<User, Integer>{
- 
-    public Optional<User> findByEmail(String email);
+public interface PermissionJR extends JpaRepository<Permission, Integer>{
     
 }

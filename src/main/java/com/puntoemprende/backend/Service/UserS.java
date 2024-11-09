@@ -36,6 +36,10 @@ public class UserS {
     public List<User> getUsers() {
         return userR.getAll();
     }
+    
+    public Optional<User> findByEmail(String email){
+        return userR.findByEmail(email);
+    }
 
     public Optional<User> getUser(Integer id) {
         if (id == null) {

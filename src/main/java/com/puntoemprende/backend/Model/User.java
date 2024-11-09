@@ -17,7 +17,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Collections;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import validations.onCreate;
 import validations.onUpdate;
 
@@ -28,7 +33,7 @@ import validations.onUpdate;
 @Entity
 @Table(name="usuario")
 @Data
-public class User {
+public class User implements UserDetails{
     
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -88,4 +93,39 @@ public class User {
     @JsonIgnoreProperties(value="users")
     private TypeDocument typeDocument;
     
+    @JoinColumn(name = "Permiso_idPermiso", nullable = false)
+    @ManyToOne()
+    @JsonIgnoreProperties(value="users")
+    private Permission permission;
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+permission.getName());
+        return Collections.singletonList(authority);
+    }
+
+    @Override
+    public String getUsername() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled(); //To change body of generated methods, choose Tools | Templates.
+    }
 }

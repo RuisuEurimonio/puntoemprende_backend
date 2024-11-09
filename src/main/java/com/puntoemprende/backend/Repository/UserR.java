@@ -42,4 +42,8 @@ public class UserR {
         userJR.deleteById(id);
     }
     
+    public Optional<User> findByEmail(String email){
+        return userJR.findByEmail(email);
+    }
+    
 }
