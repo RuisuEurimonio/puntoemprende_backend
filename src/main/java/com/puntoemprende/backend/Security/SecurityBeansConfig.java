@@ -6,6 +6,7 @@
 package com.puntoemprende.backend.Security;
 
 import Exceptions.CustomException;
+import com.puntoemprende.backend.Repository.UserR;
 import com.puntoemprende.backend.Service.UserS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityBeansConfig {
     
-    @Autowired
-    private UserS userS;
+    private final UserR usuarioR;
+
+    public SecurityBeansConfig(UserR usuarioR) {
+        this.usuarioR = usuarioR;
+    }
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
@@ -40,7 +44,7 @@ public class SecurityBeansConfig {
     
     @Bean
     public UserDetailsService userDetailsService() {
-        return userName -> userS.findByEmail(userName)
+        return userName -> usuarioR.findByEmail(userName)
                 .orElseThrow(() -> new CustomException("User not found"));
     }
     

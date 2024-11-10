@@ -12,9 +12,18 @@ import com.puntoemprende.backend.Model.User;
 import com.puntoemprende.backend.Repository.TownR;
 import com.puntoemprende.backend.Repository.TypeDocumentR;
 import com.puntoemprende.backend.Repository.UserR;
+import com.puntoemprende.backend.Security.JwtService;
+import com.puntoemprende.backend.Security.SecurityBeansConfig;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,6 +31,7 @@ import org.springframework.stereotype.Service;
  * @author Ruisu's
  */
 @Service
+@RequiredArgsConstructor
 public class UserS {
     
     @Autowired
@@ -32,6 +42,15 @@ public class UserS {
     
     @Autowired
     private TypeDocumentR typeDocumentR;
+    
+    @Autowired
+    private AuthenticationManager authManager;
+    
+    @Autowired 
+    private JwtService jwtS; 
+    
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> getUsers() {
         return userR.getAll();
@@ -53,6 +72,7 @@ public class UserS {
     }
 
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userR.createUser(user);
 
     }
@@ -108,6 +128,28 @@ public class UserS {
             return;
         }
         throw new CustomException("No se ingreso un id");
+    }
+    
+    public Map<String, Object> login(String correo, String contrasena) throws NoSuchAlgorithmException{
+        
+        Map<String, Object> res = new HashMap<String,Object>();
+        
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(correo, contrasena);
+        authManager.authenticate(auth);
+        User user = userR.findByEmail(correo).get();
+        
+        String token = jwtS.generateKey(user, generateExtraClaims(user));
+        res.put("User:", user);
+        res.put("Token:", token);
+        
+        return res;
+    }
+    
+    public Map<String, Object> generateExtraClaims(User usuario){
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("name", usuario.getName()+" "+usuario.getLastName());
+        extraClaims.put("Authorities", usuario.getAuthorities());   
+        return extraClaims;
     }
     
 }

@@ -9,7 +9,9 @@ import com.puntoemprende.backend.Model.TypeDocument;
 import com.puntoemprende.backend.Model.User;
 import com.puntoemprende.backend.Service.TypeDocumentS;
 import com.puntoemprende.backend.Service.UserS;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,6 +65,12 @@ public class UserC {
     public ResponseEntity<String> deleteType(@PathVariable("id") Integer id){
         userS.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) throws NoSuchAlgorithmException {
+        Map<String, Object> res = userS.login(user.getEmail(), user.getPassword());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
     }
     
 }
