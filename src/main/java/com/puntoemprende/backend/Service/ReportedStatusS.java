@@ -9,6 +9,7 @@ import Exceptions.CustomException;
 import com.puntoemprende.backend.Model.ReportedStatus;
 import com.puntoemprende.backend.Repository.ReportedStatusR;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,8 @@ public class ReportedStatusS {
     }
     
     public ReportedStatus getById(Integer id){
-        ReportedStatus category = reportedStatusR.getById(id).orElseThrow(()-> new CustomException("No se encontró el reporte"));
-        return category;
+        ReportedStatus reportedStatud = reportedStatusR.getById(id).orElseThrow(()-> new CustomException("No se encontró el reporte"));
+        return reportedStatud;
     }
     
     public ReportedStatus createReportedStatus(ReportedStatus reportedStatus){

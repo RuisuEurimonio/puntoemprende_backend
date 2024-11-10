@@ -5,14 +5,11 @@
  */
 package com.puntoemprende.backend.Controller;
 
-import com.puntoemprende.backend.Model.TypeDocument;
+import com.puntoemprende.backend.Model.Post;
 import com.puntoemprende.backend.Model.User;
-import com.puntoemprende.backend.Service.TypeDocumentS;
+import com.puntoemprende.backend.Service.PostS;
 import com.puntoemprende.backend.Service.UserS;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,44 +30,39 @@ import validations.onUpdate;
  *
  * @author Ruisu's
  */
-@RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/post")
 @CrossOrigin
-public class UserC {
+@RestController
+public class PostC {
+    
     
     @Autowired
-    private UserS userS;
+    private PostS postS;
     
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getTypes(){
-        return ResponseEntity.status(HttpStatus.OK).body(userS.getUsers());
+    public ResponseEntity<List<Post>> getPosts(){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.getAll());
     }
     
     @GetMapping("/id/{id}")
-    public ResponseEntity<User> getType(@PathVariable("id") Integer id){
-        return ResponseEntity.status(HttpStatus.OK).body(userS.getUser(id));
+    public ResponseEntity<Post> getPost(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.getById(id));
     }
     
     @PostMapping("/create")
-    public ResponseEntity<User> createType(@Validated(onCreate.class) @RequestBody User user){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userS.createUser(user));
+    public ResponseEntity<Post> createPost(@Validated(onCreate.class) @RequestBody Post post){
+        return ResponseEntity.status(HttpStatus.CREATED).body(postS.createPost(post));
     }
     
     @PutMapping("/update")
-    public ResponseEntity<User> updateType(@Validated(onUpdate.class) @RequestBody User user){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userS.updateUser(user));
+    public ResponseEntity<Post> updatePost(@Validated(onUpdate.class) @RequestBody Post post){
+        return ResponseEntity.status(HttpStatus.CREATED).body(postS.updatePost(post));
     }
     
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteType(@PathVariable("id") Integer id){
-        userS.deleteUser(id);
+    public ResponseEntity<String> deletePost(@PathVariable("id") Integer id){
+        postS.deletePost(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
-    }
-    
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) throws NoSuchAlgorithmException {
-        Map<String, Object> res = userS.login(user.getEmail(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
     }
     
 }

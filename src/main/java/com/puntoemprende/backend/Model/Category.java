@@ -5,12 +5,15 @@
  */
 package com.puntoemprende.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -26,5 +29,9 @@ public class Category extends CommonFields{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCategoria", nullable = false)
     private Integer id;
+    
+    @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties("category")
+    private List<Post> posts;
     
 }

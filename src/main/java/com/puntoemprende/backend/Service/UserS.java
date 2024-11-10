@@ -60,15 +60,9 @@ public class UserS {
         return userR.findByEmail(email);
     }
 
-    public Optional<User> getUser(Integer id) {
-        if (id == null) {
-            throw new CustomException("El id es nulo");
-        }
-        Optional<User> type = userR.getById(id);
-        if (type.isEmpty()) {
-            throw new CustomException("El id no se encontro");
-        }
-        return type;
+    public User getUser(Integer id) {
+        User user = userR.getById(id).orElseThrow(()-> new CustomException("No se encontro el usuario"));
+        return user;
     }
 
     public User createUser(User user) {
