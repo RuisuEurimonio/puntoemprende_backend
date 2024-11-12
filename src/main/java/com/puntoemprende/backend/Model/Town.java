@@ -5,6 +5,7 @@
  */
 package com.puntoemprende.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,6 +46,6 @@ public class Town {
     private Country country;
     
     @OneToMany(mappedBy = "town")
-    @JsonIgnoreProperties("town")
+    @JsonIgnore
     private List<User> users;
 }

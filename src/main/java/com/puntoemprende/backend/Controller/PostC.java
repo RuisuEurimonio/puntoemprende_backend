@@ -65,4 +65,13 @@ public class PostC {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
     }
     
+    @GetMapping("/find/category/{id}")
+    public ResponseEntity<List<Post>> findByCategory(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.findByCategoryId(id));
+    }
+    
+    @GetMapping("/find/scope/{id}")
+    public ResponseEntity<List<Post>> findByScope(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.findByScopeId(id));
+    }
 }

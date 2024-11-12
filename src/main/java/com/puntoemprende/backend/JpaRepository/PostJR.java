@@ -16,5 +16,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PostJR extends JpaRepository<Post, Integer>{
     
     public List<Post> findByTitleOrDescriptionIgnoreCase(String input, String input2);
+ 
+    public List<Post> findByScopeId(int id);
     
+    public List<Post> findByCategoryId(int id);
 }

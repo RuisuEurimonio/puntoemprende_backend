@@ -104,5 +104,14 @@ public class PostS {
         return postR.findByTitleOrDescription(input);
     }
    
+    public List<Post> findByCategoryId(int id){
+        categoryS.getById(id);
+        return postR.findByCategoryID(id);
+    }
+    
+    public List<Post> findByScopeId(int id){
+        scopeS.getById(id);
+        return postR.findByScopeID(id);
+    }
     
 }

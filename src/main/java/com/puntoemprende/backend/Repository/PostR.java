@@ -48,4 +48,11 @@ public class PostR {
         return postJr.findByTitleOrDescriptionIgnoreCase(input, input);
     }
     
+    public List<Post> findByCategoryID(int id){
+        return postJr.findByCategoryId(id);
+    }
+    
+    public List<Post> findByScopeID(int id){
+        return postJr.findByScopeId(id);
+    }
 }
