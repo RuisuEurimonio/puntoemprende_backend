@@ -59,6 +59,7 @@ public class Post {
     private String description;
     
     @Column(name = "imagen", nullable = true)
+    @Size(min = 1, max = 300, message = "Ingrese una imagen validá", groups = {onCreate.class, onUpdate.class})
     private String image;
     
     @Column(name = "haveEnvio", nullable = false)

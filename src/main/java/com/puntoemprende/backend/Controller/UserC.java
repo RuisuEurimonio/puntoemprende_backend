@@ -73,4 +73,13 @@ public class UserC {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
     }
     
+    @GetMapping("/business")
+    public ResponseEntity<List<User>> getBusiness(){
+        return ResponseEntity.status(HttpStatus.OK).body(userS.findByBusinessIsNotNull());
+    }
+    
+    @GetMapping("/search/business/{input}")
+    public ResponseEntity<List<User>> getBusiness(@PathVariable("input") String name){
+        return ResponseEntity.status(HttpStatus.OK).body(userS.findByBusiness(name));
+    }
 }

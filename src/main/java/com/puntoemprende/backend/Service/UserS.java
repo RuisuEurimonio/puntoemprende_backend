@@ -190,4 +190,14 @@ public class UserS {
         return extraClaims;
     }
     
+    public List<User> findByBusinessIsNotNull(){
+        return userR.findByBusinessIsNotNull();
+    }
+    
+    public List<User> findByBusiness(String name){
+        if(name == null || name.equals("")){
+            new CustomException("Nombre no ingresado");
+        }
+        return userR.findByBusinessIsNotNull();
+    }
 }

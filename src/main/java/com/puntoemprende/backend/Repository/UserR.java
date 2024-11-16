@@ -46,4 +46,11 @@ public class UserR {
         return userJR.findByEmail(email);
     }
     
+    public List<User> findByBusinessIsNotNull(){
+        return userJR.findByBusinessIsNotNull();
+    }
+    
+    public List<User> findByBusiness(String name){
+        return userJR.findByBusiness(name);
+    }
 }
