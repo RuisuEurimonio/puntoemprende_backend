@@ -45,7 +45,7 @@ public class PostR {
     }
     
     public List<Post> findByTitleOrDescription(String input){
-        return postJr.findByTitleOrDescriptionIgnoreCase(input, input);
+        return postJr.findByTitleContainingOrDescriptionContaining(input, input);
     }
     
     public List<Post> findByCategoryID(int id){

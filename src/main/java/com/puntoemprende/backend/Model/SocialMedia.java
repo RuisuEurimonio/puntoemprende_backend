@@ -5,13 +5,16 @@
  */
 package com.puntoemprende.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Data;
 import validations.onCreate;
 import validations.onUpdate;
@@ -34,4 +37,7 @@ public class SocialMedia extends CommonFields{
     @Size(min = 10, max = 200, message = "Ingrese un nombre link valido", groups = {onUpdate.class, onCreate.class})
     private String link;
     
+    @ManyToMany(mappedBy = "socialMedia")
+    @JsonIgnore
+    private List<User> users;
 }

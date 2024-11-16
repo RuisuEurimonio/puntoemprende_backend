@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -102,8 +104,16 @@ public class User implements UserDetails{
     private Permission permission;
     
     @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties("user")
+    @JsonIgnore
     private List<Post> posts;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "redsocial_has_usuario", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "Usuario_idUsuario"), // Llave foránea de la tabla user
+        inverseJoinColumns = @JoinColumn(name = "RedSocial_idRedSocial") // Llave foránea de la tabla socialmedia
+    )
+    private List<SocialMedia> socialMedia;
     
     @JsonIgnore
     @Override

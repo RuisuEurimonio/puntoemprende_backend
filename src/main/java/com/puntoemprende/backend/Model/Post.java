@@ -40,7 +40,7 @@ public class Post {
     private Integer id;
     
     @Column(name = "titulo", nullable = false)
-    @Size(min = 4, max = 45, message="Ingrese un título", groups = {onCreate.class, onUpdate.class})
+    @Size(min = 2, max = 45, message="Ingrese un título", groups = {onCreate.class, onUpdate.class})
     @NotEmpty(message = "Ingrese un título", groups = onCreate.class)
     @NotNull(message = "Ingrese un título", groups = onCreate.class)
     private String title;

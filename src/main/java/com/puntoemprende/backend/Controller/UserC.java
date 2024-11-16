@@ -42,27 +42,27 @@ public class UserC {
     private UserS userS;
     
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getTypes(){
+    public ResponseEntity<List<User>> getUsers(){
         return ResponseEntity.status(HttpStatus.OK).body(userS.getUsers());
     }
     
     @GetMapping("/id/{id}")
-    public ResponseEntity<User> getType(@PathVariable("id") Integer id){
+    public ResponseEntity<User> getUser(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(userS.getUser(id));
     }
     
     @PostMapping("/create")
-    public ResponseEntity<User> createType(@Validated(onCreate.class) @RequestBody User user){
+    public ResponseEntity<User> createUser(@Validated(onCreate.class) @RequestBody User user){
         return ResponseEntity.status(HttpStatus.CREATED).body(userS.createUser(user));
     }
     
     @PutMapping("/update")
-    public ResponseEntity<User> updateType(@Validated(onUpdate.class) @RequestBody User user){
+    public ResponseEntity<User> updateUser(@Validated(onUpdate.class) @RequestBody User user){
         return ResponseEntity.status(HttpStatus.CREATED).body(userS.updateUser(user));
     }
     
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteType(@PathVariable("id") Integer id){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id){
         userS.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
     }

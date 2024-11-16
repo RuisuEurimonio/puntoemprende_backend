@@ -6,15 +6,20 @@
 package com.puntoemprende.backend.Service;
 
 import Exceptions.CustomException;
+import com.puntoemprende.backend.Model.Permission;
+import com.puntoemprende.backend.Model.SocialMedia;
 import com.puntoemprende.backend.Model.Town;
 import com.puntoemprende.backend.Model.TypeDocument;
 import com.puntoemprende.backend.Model.User;
+import com.puntoemprende.backend.Repository.PermissionR;
+import com.puntoemprende.backend.Repository.SocialMediaR;
 import com.puntoemprende.backend.Repository.TownR;
 import com.puntoemprende.backend.Repository.TypeDocumentR;
 import com.puntoemprende.backend.Repository.UserR;
 import com.puntoemprende.backend.Security.JwtService;
 import com.puntoemprende.backend.Security.SecurityBeansConfig;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +49,12 @@ public class UserS {
     private TypeDocumentR typeDocumentR;
     
     @Autowired
+    private PermissionR permissionR;
+    
+    @Autowired
+    private SocialMediaR socialMediaR;
+    
+    @Autowired
     private AuthenticationManager authManager;
     
     @Autowired 
@@ -66,6 +77,26 @@ public class UserS {
     }
 
     public User createUser(User user) {
+        Optional<User> userDB = userR.findByEmail(user.getEmail());
+        if(userDB.isPresent()){
+            System.out.println("hola");
+            throw new CustomException("El correo ya esta registrado.");
+        }
+        if(user.getPermission() == null){
+            user.setPermission(permissionR.getById(1).orElseThrow(()-> new CustomException("Ha sucedido un error")));
+        }
+        if(user.getSocialMedia() != null){
+            List<SocialMedia> socialList = new ArrayList<>();
+            for(SocialMedia social : user.getSocialMedia()){
+                Optional<SocialMedia> socialDB = socialMediaR.getById(social.getId());
+                if(socialDB.isEmpty() && social.getId() == null){
+                    socialList.add(socialMediaR.createCategory(social));
+                }else{
+                    socialList.add(socialDB.get());
+                }
+            }
+            
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userR.createUser(user);
 
@@ -98,14 +129,27 @@ public class UserS {
             Town townDB = townR.getById(user.getTown().getId()).orElseThrow(()-> new CustomException("No se encontro la ciudad"));
             userDB.get().setTown(townDB);
         }
-        
         if(user.getTypeDocument() != null){
             TypeDocument typeDocumentDB = typeDocumentR.getType(user.getTypeDocument().getId()).orElseThrow(()-> new CustomException("No se encontro el tipo de documento"));
             userDB.get().setTypeDocument(typeDocumentDB);
         }
-        
+        if(user.getPermission()!= null){
+            Permission permissionDB = permissionR.getById(user.getTypeDocument().getId()).orElseThrow(()-> new CustomException("No se encontro el permiso"));
+            userDB.get().setPermission(permissionDB);
+        }
         if(user.getPassword() != null){
             userDB.get().setPassword(user.getPassword());
+        }
+        if(user.getSocialMedia() != null){
+            List<SocialMedia> socialMediaList = new ArrayList<>();
+            for(SocialMedia social : user.getSocialMedia()){
+                if(social.getId() == null){
+                    socialMediaList.add(socialMediaR.createCategory(social));
+                }else{
+                    socialMediaList.add(socialMediaR.getById(social.getId()).orElseThrow(()-> new CustomException("No se encontro la red social")));
+                }
+            }
+            userDB.get().setSocialMedia(socialMediaList);
         }
         userDB.get().setAutenticated(true);
         return userR.updateUser(userDB.get());
@@ -133,8 +177,8 @@ public class UserS {
         User user = userR.findByEmail(correo).get();
         
         String token = jwtS.generateKey(user, generateExtraClaims(user));
-        res.put("User:", user);
-        res.put("Token:", token);
+        res.put("User", user);
+        res.put("Token", token);
         
         return res;
     }

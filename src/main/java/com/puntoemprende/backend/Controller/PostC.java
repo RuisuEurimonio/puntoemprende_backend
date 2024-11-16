@@ -65,6 +65,11 @@ public class PostC {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
     }
     
+    @GetMapping("/search/{input}")
+    public ResponseEntity<List<Post>> findByCategory(@PathVariable("input") String input){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.findByTitleOrDescription(input));
+    }
+    
     @GetMapping("/find/category/{id}")
     public ResponseEntity<List<Post>> findByCategory(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByCategoryId(id));
