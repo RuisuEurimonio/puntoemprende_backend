@@ -114,4 +114,9 @@ public class PostS {
         return postR.findByScopeID(id);
     }
     
+    public List<Post> findByUserId(int id){
+        userS.getUser(id);
+        return postR.findByUserID(id);
+    }
+    
 }

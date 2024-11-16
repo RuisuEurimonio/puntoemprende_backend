@@ -141,7 +141,7 @@ public class UserS {
             userDB.get().setPassword(user.getPassword());
         }
         if(user.getSocialMedia() != null){
-            List<SocialMedia> socialMediaList = new ArrayList<>();
+            List<SocialMedia> socialMediaList = new ArrayList<>(userDB.get().getSocialMedia());
             for(SocialMedia social : user.getSocialMedia()){
                 if(social.getId() == null){
                     socialMediaList.add(socialMediaR.createCategory(social));

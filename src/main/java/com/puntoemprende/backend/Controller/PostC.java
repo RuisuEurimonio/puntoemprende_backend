@@ -79,4 +79,9 @@ public class PostC {
     public ResponseEntity<List<Post>> findByScope(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByScopeId(id));
     }
+    
+    @GetMapping("/find/user/{id}")
+    public ResponseEntity<List<Post>> findByUser(@PathVariable("id") Integer id){
+        return ResponseEntity.status(HttpStatus.OK).body(postS.findByUserId(id));
+    }
 }

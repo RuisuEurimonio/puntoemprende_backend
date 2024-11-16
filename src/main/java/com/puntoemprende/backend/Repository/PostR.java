@@ -55,4 +55,8 @@ public class PostR {
     public List<Post> findByScopeID(int id){
         return postJr.findByScopeId(id);
     }
+    
+    public List<Post> findByUserID(int id){
+        return postJr.findByUserId(id);
+    }
 }

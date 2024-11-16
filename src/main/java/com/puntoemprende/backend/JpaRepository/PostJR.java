@@ -20,4 +20,6 @@ public interface PostJR extends JpaRepository<Post, Integer>{
     public List<Post> findByScopeId(int id);
     
     public List<Post> findByCategoryId(int id);
+    
+    public List<Post> findByUserId(int id);
 }

@@ -7,6 +7,7 @@ package com.puntoemprende.backend.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -103,11 +104,11 @@ public class User implements UserDetails{
     @JsonIgnoreProperties(value="users")
     private Permission permission;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Post> posts;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "redsocial_has_usuario", // Nombre de la tabla intermedia
         joinColumns = @JoinColumn(name = "Usuario_idUsuario"), // Llave foránea de la tabla user
