@@ -174,7 +174,7 @@ public class UserS {
         
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(correo, contrasena);
         authManager.authenticate(auth);
-        User user = userR.findByEmail(correo).get();
+        User user = userR.findByEmail(correo).orElseThrow(()-> new CustomException("No se encontro el correo"));
         
         String token = jwtS.generateKey(user, generateExtraClaims(user));
         res.put("User", user);
