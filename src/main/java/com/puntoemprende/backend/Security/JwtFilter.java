@@ -19,16 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  *
  * @author Ruisu's
  */
 @Component
-public class JwtFilter {
-    
-    @Autowired
-    private UserS userS;
+public class JwtFilter extends OncePerRequestFilter{
     
     @Autowired
     private JwtService jwtS;
@@ -36,27 +34,28 @@ public class JwtFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, java.io.IOException{
         
         String authHeader = request.getHeader("Authorization");
-        
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        
+
         String jwt = authHeader.split(" ")[1];
-        String username = null;
-        
-        try{
+        String username;
+
+        try {
             username = jwtS.getName(jwt);
-        } catch(NoSuchAlgorithmException ex){
-            Logger.getLogger(JwtFilter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            filterChain.doFilter(request, response);
+            return;
         }
-        
-        User user = userS.findByEmail(username).orElseThrow(()-> new CustomException("No se encontro el usuario en la validación JWT"));
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                user, null, user.getAuthorities()
-        );
-        
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        // Si el token es válido, configura la autenticación en el contexto de seguridad
+        UsernamePasswordAuthenticationToken authToken = jwtS.getAuthentication(username);
+        if (authToken != null) {
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+
         filterChain.doFilter(request, response);
         
     }
