@@ -38,7 +38,7 @@ public class ReportedStatusC {
     private ReportedStatusS reportedStatusS;
     
     @GetMapping("/all")
-    @PreAuthorize("hasRole('Administrador')")
+    //@PreAuthorize("hasRole('Administrador')")
     public ResponseEntity<List<ReportedStatus>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(reportedStatusS.getAll());
     }

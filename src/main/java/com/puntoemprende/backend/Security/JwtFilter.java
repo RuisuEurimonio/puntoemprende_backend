@@ -12,6 +12,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +51,6 @@ public class JwtFilter extends OncePerRequestFilter{
             return;
         }
 
-        // Si el token es válido, configura la autenticación en el contexto de seguridad
         UsernamePasswordAuthenticationToken authToken = jwtS.getAuthentication(username);
         if (authToken != null) {
             SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -59,4 +59,5 @@ public class JwtFilter extends OncePerRequestFilter{
         filterChain.doFilter(request, response);
         
     }
+    
 }

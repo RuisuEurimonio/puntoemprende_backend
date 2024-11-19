@@ -9,10 +9,12 @@ import com.puntoemprende.backend.Model.Post;
 import com.puntoemprende.backend.Model.User;
 import com.puntoemprende.backend.Service.PostS;
 import com.puntoemprende.backend.Service.UserS;
+import jakarta.annotation.security.PermitAll;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,37 +52,44 @@ public class PostC {
     }
     
     @PostMapping("/create")
+    @PreAuthorize("hasRole('business') or hasRole('Administrador')")
     public ResponseEntity<Post> createPost(@Validated(onCreate.class) @RequestBody Post post){
         return ResponseEntity.status(HttpStatus.CREATED).body(postS.createPost(post));
     }
     
     @PutMapping("/update")
+    @PreAuthorize("hasRole('business') or hasRole('Administrador')")
     public ResponseEntity<Post> updatePost(@Validated(onUpdate.class) @RequestBody Post post){
         return ResponseEntity.status(HttpStatus.CREATED).body(postS.updatePost(post));
     }
     
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('business') or hasRole('Administrador')")
     public ResponseEntity<String> deletePost(@PathVariable("id") Integer id){
         postS.deletePost(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(id+" eliminado");
     }
     
     @GetMapping("/search/{input}")
+     @PreAuthorize("permitAll()")
     public ResponseEntity<List<Post>> findByCategory(@PathVariable("input") String input){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByTitleOrDescription(input));
     }
     
     @GetMapping("/find/category/{id}")
+     @PreAuthorize("permitAll()")
     public ResponseEntity<List<Post>> findByCategory(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByCategoryId(id));
     }
     
     @GetMapping("/find/scope/{id}")
+     @PreAuthorize("permitAll()")
     public ResponseEntity<List<Post>> findByScope(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByScopeId(id));
     }
     
     @GetMapping("/find/user/{id}")
+     @PreAuthorize("permitAll()")
     public ResponseEntity<List<Post>> findByUser(@PathVariable("id") Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(postS.findByUserId(id));
     }
